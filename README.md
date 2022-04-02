@@ -2,6 +2,8 @@
 
 Source code for **TPORE**, described by the paper: [End-to-End Open Relation Extraction in Chinese Field](https://arxiv.org/pdf/2010.12812.pdf).
 
+
+## Dataset
 In this paper, we selected two Chinese Open Relation Extraction Dataset for experiments.
 
 * **COER** dataset comes from the paper [Chinese Open Relation Extraction and Knowledge Base Establishment](https://hong.xmu.edu.cn/__local/7/11/EF/278F61A2A2874569C391BBD78A8_5A45CBFF_227EB3.pdf?e=.pdf). We can find its dataset from [https://github.com/TJUNLP/COER](https://github.com/TJUNLP/COER).
@@ -18,13 +20,14 @@ pip install -r requirements.txt
 
 ## Quick Start
 
+### Original Data Format
 First, the original input file for our model needs to be `.jsonl` and each data in the file should be in following format:
 ```python
-# Assume that we have predefined FRE `BirthDate` but not predefined `BirthPlace`.
+# Suppose we have predefined `BirthDate` for FRE, but no predefined `BirthPlace`。
 {
     "text": "1980年姚明出生于上海",
     "relation_list": [
-        # 开放关系中predicate来自于文本，需要有明确的predicate_span
+        # For ORE, the predicate comes from the text and requires a clear predicate_span.
         {
             "subject": "姚明",
             "predicate": "出生于",
@@ -41,7 +44,7 @@ First, the original input file for our model needs to be `.jsonl` and each data 
             "predicate_span": [7, 10],
             "object_span": [0, 5]
         },
-        # 限定关系中predicate不需要来自于文本，predicate_span此keykey为空或者[-1, -1]
+        # For FRE, the predicate does not need to come from text, and predicate_span can be empty or [-1, -1].
         {
             "subject": "姚明",
             "predicate": "BirthDate",
@@ -72,11 +75,8 @@ First, the original input file for our model needs to be `.jsonl` and each data 
 }
 ```
 
-Then we execute the following command to convert the data into the format required by the model:
-
-```bash
-python preprocess_data.py
-```
+### Converted Data Format
+Then we execute `python preprocess_data.py` to convert the data into the format required by the model:
 
 The converted data format is as follows:
 
@@ -115,6 +115,7 @@ The converted data format is as follows:
 
 The converted file should be under the path:  `TPORE/data/data4model/`.
 
+### Config for category
 For different datasets, we should modify the labels in file `TPORE/label_config.json`.
 
 ```json
@@ -142,7 +143,7 @@ For different datasets, we should modify the labels in file `TPORE/label_config.
 }
 ```
 
-
+### Train
 Finally, we execute *run_saoke.sh* or the following command to train:
 ```bash
 python3 -u main.py \
@@ -160,6 +161,7 @@ python3 -u main.py \
         --vocab_path [bert-base-chinese dirname]
 ```
 
+### Evaluate
 And we execute the following command to test:
 ```bash
 python3 -u main.py \
