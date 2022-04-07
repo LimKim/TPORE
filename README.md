@@ -180,4 +180,4 @@ python3 -u main.py \
 
 
 ## Questions
-If you have any questions about the code, please file an issue or contact us.
+If you have any questions about the code, please open an issue or contact us.
